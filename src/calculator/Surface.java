@@ -20,6 +20,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 public class Surface extends JFrame{
 	
@@ -37,6 +38,10 @@ public class Surface extends JFrame{
 		super(title);
 		setLayout(new BorderLayout(5, 5));
 		setSize(296, 370);
+		
+		Font font = new Font("ËÎÌו", Font.PLAIN, 15); 
+		UIManager.put("Button.font",font); 
+		UIManager.put("Label.font",font); 
 		
 		initViews();
 		
@@ -103,7 +108,7 @@ public class Surface extends JFrame{
 		Font font = new Font("ËÎÌו", Font.PLAIN, 20);
 		textArea = new JTextField();
 		textArea.setText("0");
-		textArea.setPreferredSize(new Dimension(250, 40));
+		textArea.setPreferredSize(new Dimension(260, 40));
 		textArea.setEditable(false);
 		textArea.setBackground(Color.white);
 		textArea.setHorizontalAlignment(JTextField.RIGHT);
