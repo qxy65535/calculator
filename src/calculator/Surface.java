@@ -17,17 +17,20 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Surface extends JFrame{
 	
-	JPanel p_textArea;
-	JPanel p_normalButtonArea;
-	JTextField textArea;
+	private JPanel p_textArea;
+	private static JPanel p_normalButtonArea;
+	private JTextField textArea;
 	
-	String normalButtons =  "°˚EC°¿°Ã789()456*x123/%0.+-=";
-	StringBuffer expression = new StringBuffer();
+	private String normalButtons =  "°˚EC°¿°Ã789()456*x123/%0.+-=";
+	private StringBuffer expression = new StringBuffer();
+	private boolean first = true;
+	private boolean calculated = false;
 	
 	
 	public Surface(String title){
@@ -138,17 +141,56 @@ public class Surface extends JFrame{
         super.processWindowEvent(event);
     }  
     
+    private void setResult(){
+    	String result;
+		if ("".equals(expression.toString())){
+			result = "0";
+			expression = new StringBuffer();
+		}
+		else{
+			result = String.valueOf(Postfix.Calculate(expression.toString()));
+			expression = new StringBuffer(result);
+		}
+		textArea.setText(result);
+    }
+    
     private class ButtonListener implements ActionListener{
     	@Override
     	public void actionPerformed(ActionEvent e){
 //    		System.out.println(e.getActionCommand());
+    		
+    		if (first && "=".equals(e.getActionCommand()))
+    			return;
+    		else if (first){
+    			textArea.setText("");
+    			expression.delete(0, expression.length());
+    			first = false;
+//    			System.out.println("aaaaa");
+    		}
+    		
+    		if (calculated && "=".equals(e.getActionCommand()))
+    			calculated = false;
+
     		switch (e.getActionCommand()){
     		case "°˚":
+    			System.out.println(expression.length());
+    			if (expression.length() == 0)
+    				textArea.setText("0");
+    			else if (expression.length() - 1 == 0){
+    				expression.deleteCharAt(expression.length()-1);
+    				textArea.setText("0");
+    			}
+    			else if (expression.length() - 1 > 0){
+    				expression.deleteCharAt(expression.length()-1);
+    				textArea.setText(expression.toString());
+    			}
     			break;
     		case "CE":
     		case "C":
     			textArea.setText("0");
     			expression.delete(0, expression.length());
+    			first = true;
+    			calculated = false;
     			break;
     		case "°¿":
     		case "%":
@@ -156,16 +198,13 @@ public class Surface extends JFrame{
     			break;
     		case "=":
 //    			System.out.println(expression.toString());
-    			String result;
-    			if ("".equals(expression.toString())){
-    				result = "0";
-    				expression = new StringBuffer();
+    			
+    			if (!calculated){
+    				setResult();
+    				calculated = true;
     			}
-    			else{
-    				result = String.valueOf(Postfix.Calculate(expression.toString()));
-    				expression = new StringBuffer(result);
-    			}
-    			textArea.setText(result);
+    			first = true;
+
     			break;
     		default:
 //    			System.out.println(e.getActionCommand());
@@ -175,4 +214,10 @@ public class Surface extends JFrame{
     		}
     	}
     }
+    
+	
+    public static void showErrorDialog(){
+    	JOptionPane.showMessageDialog(p_normalButtonArea, "º∆À„ Ω”–ŒÛ£°");
+    }
+
 }

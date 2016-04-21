@@ -1,5 +1,6 @@
 package calculator;
 
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 public class Postfix {
@@ -138,9 +139,21 @@ public class Postfix {
 	    return i;
 	}
 	
-	public static double Calculate(String str){
-		String rsf = convert(str);
-		System.out.println((rsf));
-		return calculate(rsf);
+	public static Object Calculate(String str){
+		double result = 0;
+		
+		try{
+			String rsf = convert(str);
+			System.out.println((rsf));
+			result = calculate(rsf);
+			if (result == (int)result)
+				return (int)result;
+			else
+				return result;
+		}catch (EmptyStackException e){
+			Surface.showErrorDialog();
+		}
+		
+		return (int)0;
 	}
 }
