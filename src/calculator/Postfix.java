@@ -34,6 +34,11 @@ public class Postfix {
 					tmp.setCharAt(i, '$');
 					isf = tmp.toString();
 				}
+				if (isf.charAt(i) == '+' && (i == 0 || isOperator(isf.charAt(i-1)))){
+					StringBuffer tmp = new StringBuffer(isf);
+					tmp.setCharAt(i, '@');
+					isf = tmp.toString();
+				}
 				while (getPriority(isf.charAt(i)) <= getPriority(stk.peek())){
 					rsf.append(stk.pop());
 				}
@@ -60,6 +65,9 @@ public class Postfix {
 			}
 			else if (rsf.charAt(i) == '$'){
 				num.push( -num.pop());
+			}
+			else if (rsf.charAt(i) == '@'){
+				num.push( num.pop());
 			}
 			else if (rsf.charAt(i) != ' '){
 				x1 = num.pop();
@@ -105,6 +113,7 @@ public class Postfix {
 	        case '+':
 	        case '-':
 	        case '$':
+	        case '@':
 	            return 1;
 	        case '*':
 	        case '/':
