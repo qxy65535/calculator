@@ -159,14 +159,45 @@ public class Surface extends JFrame{
 		textArea.setText(result);
     }
     
+    private void setResult(double resultNum){
+    	String result;
+		if ("".equals(expression.toString())){
+			result = "0";
+			expression = new StringBuffer();
+		}
+		else{
+	    	if (resultNum == (int)resultNum)
+	    		result = String.valueOf((int)resultNum);
+	    	else
+	    		result = String.valueOf(resultNum);
+	    	
+			expression = new StringBuffer(result);
+		}
+		textArea.setText(result);
+    }
+    
+    private double getResult(){
+    	double result;
+    	try{
+    		result = Double.valueOf(textArea.getText());
+    		return result;
+    	}catch(NumberFormatException e){
+    		showErrorDialog();
+    	}
+    	return 0;
+    }
+    
+    
     private class ButtonListener implements ActionListener{
     	@Override
     	public void actionPerformed(ActionEvent e){
 //    		System.out.println(e.getActionCommand());
+    		double result;
     		
     		if (first && "=".equals(e.getActionCommand()))
     			return;
-    		else if (first){
+    		else if (first && !"¡À".equals(e.getActionCommand()) && !"¡Ì".equals(e.getActionCommand())
+    				&& !"1/x".equals(e.getActionCommand()) && !"%".equals(e.getActionCommand())){
     			textArea.setText("");
     			expression.delete(0, expression.length());
     			first = false;
@@ -198,8 +229,25 @@ public class Surface extends JFrame{
     			calculated = false;
     			break;
     		case "¡À":
+//    			System.out.println(textArea.getText());
+    			result = -getResult();
+    			setResult(result);
+    			first = true;
+    			break;
     		case "%":
+    			result = getResult()*100;
+    			setResult(result);
+    			first = true;
+    			break;
     		case "1/x":
+    			result = 1/getResult();
+    			setResult(result);
+    			first = true;
+    			break;
+    		case "¡Ì":
+    			result = Math.sqrt(getResult());
+    			setResult(result);
+    			first = true;
     			break;
     		case "=":
 //    			System.out.println(expression.toString());
