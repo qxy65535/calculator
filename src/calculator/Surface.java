@@ -7,6 +7,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -28,7 +32,8 @@ public class Surface extends JFrame{
 	private static JPanel p_normalButtonArea;
 	private JTextField textArea;
 	
-	private String normalButtons =  "←EC±√789()456*x123/%0.+-=";
+	private String[] normalButtons =  {"←","CE","C","±","√","7","8","9","(",")","4","5","6","*","1/x",
+			"1","2","3","/","%","0",".","+","-","="};
 	private StringBuffer expression = new StringBuffer();
 	private boolean first = true;
 	private boolean calculated = false;
@@ -102,6 +107,41 @@ public class Surface extends JFrame{
 		this.setJMenuBar(menuBar);
 		menuBar.add(modeChoose);
 		menuBar.add(edit);
+		
+		
+		copyItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Clipboard clipboard = getToolkit().getSystemClipboard();
+		        Transferable text = new StringSelection(textArea.getText());  
+		        clipboard.setContents(text, null);
+		        
+		        JOptionPane.showMessageDialog(Surface.this, "已成功复制到剪贴板！");
+			}
+		});
+		pasteItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent event){
+				String s = "";
+				Clipboard clipboard = getToolkit().getSystemClipboard();
+		        Transferable clipTf = clipboard.getContents(null);  
+		        
+		        if (clipTf != null) {  
+		            // 检查内容是否是文本类型  
+		            if (clipTf.isDataFlavorSupported(DataFlavor.stringFlavor)) {  
+		                try {  
+		                	s = (String)clipTf.getTransferData(DataFlavor.stringFlavor);
+		                	if (!"".equals(s)){
+		                		expression = new StringBuffer(s);
+		                		first = false;
+		                		textArea.setText(s);
+		                	}
+		                }catch (Exception e) {  
+		                    e.printStackTrace();
+		                } 
+		            }
+		        }  
+		  
+			}
+		});
 	}
 	
 	private void initNormalView(){
@@ -120,13 +160,8 @@ public class Surface extends JFrame{
 		Font font = new Font("宋体", Font.PLAIN, 18);
 		JButton button;
 		ButtonListener buttonListener = new ButtonListener();
-		for (int i = 0; i < normalButtons.length(); ++i){
-			if ("E".equals(normalButtons.substring(i, i+1)))
-				button = new JButton("CE");
-			else if ("x".equals(normalButtons.substring(i, i+1)))
-				button = new JButton("1/x");
-			else
-				button = new JButton(normalButtons.substring(i, i+1));
+		for (int i = 0; i < normalButtons.length; ++i){
+			button = new JButton(normalButtons[i]);
 			
 			button.setMargin(new Insets(0, 0, 0, 0));
 			button.setFont(font);
