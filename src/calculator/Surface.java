@@ -191,7 +191,7 @@ public class Surface extends JFrame{
 		else{
 			try{
 				result = String.valueOf(Postfix.Calculate(expression.toString()));
-			}catch (EmptyStackException e){
+			}catch (EmptyStackException | IllegalArgumentException e2){
 				result = "0";
 				showErrorDialog();
 			}

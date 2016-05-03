@@ -53,7 +53,7 @@ public class Postfix {
 		return rsf.toString();
 	}
 	
-	private static double calculate(String rsf){
+	private static double calculate(String rsf) throws IllegalArgumentException{
 		int i = 0;
 		Stack<Double> num = new Stack<Double>();
 		double x1, x2;
@@ -123,12 +123,16 @@ public class Postfix {
 	    }
 	}
 	
-	private static int readNum(String rsf,Stack<Double> numStack, int i){
+	private static int readNum(String rsf,Stack<Double> numStack, int i) throws IllegalArgumentException{
 	    double result = 0;
 	    double num = 10;
 	    boolean flag = true;
 
 	    for (; i < rsf.length(); ++i){
+	        if  (rsf.charAt(i) == '.' && !flag){
+        		throw new IllegalArgumentException("Êý×ÖÊäÈëÓÐÎó");
+	        }
+	        
 	        if (rsf.charAt(i) == '.'){
 	            flag = false;
 	        }
@@ -148,17 +152,17 @@ public class Postfix {
 	    return i;
 	}
 	
-	public static Object Calculate(String str) throws EmptyStackException{
+	public static Object Calculate(String str) throws EmptyStackException, IllegalArgumentException{
 		double result = 0;
 		
 //		try{
-			String rsf = convert(str);
-			System.out.println((rsf));
-			result = calculate(rsf);
-			if (result == (int)result)
-				return (int)result;
-			else
-				return result;
+		String rsf = convert(str);
+		System.out.println((rsf));
+		result = calculate(rsf);
+		if (result == (int)result)
+			return (int)result;
+		else
+			return result;
 //		}catch (EmptyStackException e){
 //			Surface.showErrorDialog();
 //		}
