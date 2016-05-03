@@ -33,7 +33,7 @@ public class Surface extends JFrame{
 	private JPanel p_normalButtonArea;
 	private JTextField textArea;
 	
-	private String[] normalButtons =  {"¡û","CE","C","¡À","¡Ì","7","8","9","(",")","4","5","6","*","1/x",
+	private String[] normalButtons =  {"â†","CE","C","Â±","âˆš","7","8","9","(",")","4","5","6","*","1/x",
 			"1","2","3","/","%","0",".","+","-","="};
 	private StringBuffer expression = new StringBuffer();
 	private boolean first = true;
@@ -45,7 +45,7 @@ public class Surface extends JFrame{
 		setLayout(new BorderLayout(5, 5));
 		setSize(296, 370);
 		
-		Font font = new Font("ËÎÌå", Font.PLAIN, 15); 
+		Font font = new Font("å®‹ä½“", Font.PLAIN, 15); 
 		UIManager.put("Button.font",font); 
 		UIManager.put("Label.font",font); 
 		
@@ -73,15 +73,15 @@ public class Surface extends JFrame{
 	}
 	
 	private void initMenu(){
-		Font font = new Font("ËÎÌå", Font.PLAIN, 16);
+		Font font = new Font("å®‹ä½“", Font.PLAIN, 16);
 		
-		JMenu modeChoose = new JMenu("²é¿´(V)");
+		JMenu modeChoose = new JMenu("æŸ¥çœ‹(V)");
 		
 		modeChoose.setMnemonic('V');
-		JMenuItem normalItem = new JMenuItem("±ê×¼ĞÍ(T)");
+		JMenuItem normalItem = new JMenuItem("æ ‡å‡†å‹(T)");
 		normalItem.setMnemonic('T');
 		modeChoose.add(normalItem);
-		JMenuItem scienceItem = new JMenuItem("¿ÆÑ§ĞÍ(S)");
+		JMenuItem scienceItem = new JMenuItem("ç§‘å­¦å‹(S)");
 		normalItem.setMnemonic('S');
 		modeChoose.add(scienceItem);
 		
@@ -89,12 +89,12 @@ public class Surface extends JFrame{
 		normalItem.setFont(font);
 		scienceItem.setFont(font);
 		
-		JMenu edit = new JMenu("±à¼­(E)");
+		JMenu edit = new JMenu("ç¼–è¾‘(E)");
 		edit.setMnemonic('E');
-		JMenuItem copyItem = new JMenuItem("¸´ÖÆ(C)");
+		JMenuItem copyItem = new JMenuItem("å¤åˆ¶(C)");
 		copyItem.setMnemonic('C');
 		edit.add(copyItem);
-		JMenuItem pasteItem = new JMenuItem("Õ³Ìù(P)");
+		JMenuItem pasteItem = new JMenuItem("ç²˜è´´(P)");
 		pasteItem.setMnemonic('P');
 		edit.add(pasteItem);
 		
@@ -116,7 +116,7 @@ public class Surface extends JFrame{
 		        Transferable text = new StringSelection(textArea.getText());  
 		        clipboard.setContents(text, null);
 		        
-		        JOptionPane.showMessageDialog(Surface.this, "ÒÑ³É¹¦¸´ÖÆµ½¼ôÌù°å£¡");
+		        JOptionPane.showMessageDialog(Surface.this, "å·²æˆåŠŸå¤åˆ¶åˆ°å‰ªè´´æ¿ï¼");
 			}
 		});
 		pasteItem.addActionListener(new ActionListener(){
@@ -126,7 +126,6 @@ public class Surface extends JFrame{
 		        Transferable clipTf = clipboard.getContents(null);  
 		        
 		        if (clipTf != null) {  
-		            // ¼ì²éÄÚÈİÊÇ·ñÊÇÎÄ±¾ÀàĞÍ  
 		            if (clipTf.isDataFlavorSupported(DataFlavor.stringFlavor)) {  
 		                try {  
 		                	s = (String)clipTf.getTransferData(DataFlavor.stringFlavor);
@@ -146,7 +145,7 @@ public class Surface extends JFrame{
 	}
 	
 	private void initNormalView(){
-		Font font = new Font("ËÎÌå", Font.PLAIN, 20);
+		Font font = new Font("å®‹ä½“", Font.PLAIN, 20);
 		textArea = new JTextField();
 		textArea.setText("0");
 		textArea.setPreferredSize(new Dimension(260, 40));
@@ -158,7 +157,7 @@ public class Surface extends JFrame{
 	}
 	
 	private void initButtonView(){
-		Font font = new Font("ËÎÌå", Font.PLAIN, 18);
+		Font font = new Font("å®‹ä½“", Font.PLAIN, 18);
 		JButton button;
 		ButtonListener buttonListener = new ButtonListener();
 		for (int i = 0; i < normalButtons.length; ++i){
@@ -237,7 +236,7 @@ public class Surface extends JFrame{
     		
     		if (first && "=".equals(e.getActionCommand()))
     			return;
-    		else if (first && !"¡À".equals(e.getActionCommand()) && !"¡Ì".equals(e.getActionCommand())
+    		else if (first && !"Â±".equals(e.getActionCommand()) && !"âˆš".equals(e.getActionCommand())
     				&& !"1/x".equals(e.getActionCommand()) && !"%".equals(e.getActionCommand())){
     			textArea.setText("");
     			expression.delete(0, expression.length());
@@ -249,7 +248,7 @@ public class Surface extends JFrame{
     			calculated = false;
 
     		switch (e.getActionCommand()){
-    		case "¡û":
+    		case "â†":
     			System.out.println(expression.length());
     			if (expression.length() == 0)
     				textArea.setText("0");
@@ -269,7 +268,7 @@ public class Surface extends JFrame{
     			first = true;
     			calculated = false;
     			break;
-    		case "¡À":
+    		case "Â±":
 //    			System.out.println(textArea.getText());
     			result = -getResult();
     			setResult(result);
@@ -285,7 +284,7 @@ public class Surface extends JFrame{
     			setResult(result);
     			first = true;
     			break;
-    		case "¡Ì":
+    		case "âˆš":
     			result = Math.sqrt(getResult());
     			setResult(result);
     			first = true;
@@ -311,7 +310,7 @@ public class Surface extends JFrame{
     
 	
     public void showErrorDialog(){
-    	JOptionPane.showMessageDialog(Surface.this, "¼ÆËãÊ½ÓĞÎó£¡");
+    	JOptionPane.showMessageDialog(Surface.this, "è®¡ç®—å¼æœ‰è¯¯ï¼");
     }
 
 }
