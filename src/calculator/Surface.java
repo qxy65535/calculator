@@ -14,6 +14,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.EmptyStackException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,7 +30,7 @@ import javax.swing.UIManager;
 public class Surface extends JFrame{
 	
 	private JPanel p_textArea;
-	private static JPanel p_normalButtonArea;
+	private JPanel p_normalButtonArea;
 	private JTextField textArea;
 	
 	private String[] normalButtons =  {"←","CE","C","±","√","7","8","9","(",")","4","5","6","*","1/x",
@@ -188,7 +189,12 @@ public class Surface extends JFrame{
 			expression = new StringBuffer();
 		}
 		else{
-			result = String.valueOf(Postfix.Calculate(expression.toString()));
+			try{
+				result = String.valueOf(Postfix.Calculate(expression.toString()));
+			}catch (EmptyStackException e){
+				result = "0";
+				showErrorDialog();
+			}
 			expression = new StringBuffer(result);
 		}
 		textArea.setText(result);
@@ -304,8 +310,8 @@ public class Surface extends JFrame{
     }
     
 	
-    public static void showErrorDialog(){
-    	JOptionPane.showMessageDialog(p_normalButtonArea, "计算式有误！");
+    public void showErrorDialog(){
+    	JOptionPane.showMessageDialog(Surface.this, "计算式有误！");
     }
 
 }

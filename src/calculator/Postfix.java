@@ -148,10 +148,10 @@ public class Postfix {
 	    return i;
 	}
 	
-	public static Object Calculate(String str){
+	public static Object Calculate(String str) throws EmptyStackException{
 		double result = 0;
 		
-		try{
+//		try{
 			String rsf = convert(str);
 			System.out.println((rsf));
 			result = calculate(rsf);
@@ -159,10 +159,10 @@ public class Postfix {
 				return (int)result;
 			else
 				return result;
-		}catch (EmptyStackException e){
-			Surface.showErrorDialog();
-		}
-		
-		return (int)0;
+//		}catch (EmptyStackException e){
+//			Surface.showErrorDialog();
+//		}
+//		
+//		return (int)0;
 	}
 }
